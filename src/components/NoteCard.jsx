@@ -46,18 +46,37 @@ const NoteCard = ({ note }) => {
     // reference of card header
     const cardRef = useRef(null)
 
+    let mouseInit = { x: 0, y: 0 }
+    let mouseFinal = { x: 0, y: 0 }
+    let newPosition = { x: 0, y: 0 }
+
     // onMouseDown on card header
-    const mouseDown = () => {
+    const mouseDown = (e) => {
+        mouseInit = {
+            x: e.clientX,
+            y: e.clientY
+        }
         setSelectedNote(note)
         document.addEventListener('mousemove', mouseMove)
         document.addEventListener('mouseup', mouseUp)
     }
     // set position of card to position of mouse
     const mouseMove = (e) => {
-        setPosition({
-            x: e.clientX - 200,
-            y: e.clientY - 20
-        })
+        mouseFinal = {
+            x: e.clientX,
+            y: e.clientY
+        }
+        let movement = {
+            x: mouseFinal.x - mouseInit.x,
+            y: mouseFinal.y - mouseInit.y
+        }
+        if (position.x + movement.x > 0 && position.y + movement.y > 0) {
+            newPosition = {
+                x: position.x + movement.x,
+                y: position.y + movement.y
+            }
+            setPosition(newPosition)
+        }
     }
     // drop card from mouse
     const mouseUp = () => {
