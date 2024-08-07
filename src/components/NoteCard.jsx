@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from 'react'
-import { Trash } from '../icons/Trash.jsx'
+import { useContext, useEffect, useRef, useState } from 'react'
 import Spinner from '../icons/Spinner.jsx'
-import { bodyParser, setZIndex } from '../utils.js'
+import { bodyParser } from '../utils.js'
 import { db } from '../appwrite/databases.js'
+import DeleteButton from './DeleteButton.jsx'
+import { NoteContext } from '../context/NoteContext.jsx'
 
 // Taking a note object as props
 const NoteCard = ({ note }) => {
-
+    const { setSelectedNote } = useContext(NoteContext)
     const [saving, setSaving] = useState(false)
     const keyUpTimer = useRef(null)
 
@@ -47,8 +48,7 @@ const NoteCard = ({ note }) => {
 
     // onMouseDown on card header
     const mouseDown = () => {
-        // Broken 
-        setZIndex(cardRef.current)
+        setSelectedNote(note)
         document.addEventListener('mousemove', mouseMove)
         document.addEventListener('mouseup', mouseUp)
     }
@@ -63,9 +63,7 @@ const NoteCard = ({ note }) => {
     const mouseUp = () => {
         document.removeEventListener('mousemove', mouseMove)
         document.removeEventListener('mouseup', mouseUp)
-        saveData("position", position)
     }
-
 
     const saveData = async (key, value) => {
         const payload = { [key]: JSON.stringify(value) }
@@ -94,29 +92,23 @@ const NoteCard = ({ note }) => {
                 style={{ backgroundColor: colors.colorHeader }}
                 onMouseDown={mouseDown}
             >
-                <Trash />
-                {
-                    saving && (
-                        <div className='card-saving'>
-                            <Spinner color={colors.colorText} />
-                            <span style={{ color: colors.colorText }}>Saving...</span>
-                        </div>
-                    )
-                }
+                <DeleteButton
+                    noteId={note.$id} />
+                {saving && (
+                    <div className='card-saving'>
+                        <Spinner color={colors.colorText} />
+                        <span style={{ color: colors.colorText }}>Saving...</span>
+                    </div>
+                )}
             </div>
             <div className="card-body">
                 <textarea
                     style={{ color: colors.colorText }}
                     defaultValue={body}
                     ref={textAreaRef}
-                    onInput={() => {
-                        autoGrow(textAreaRef)
-                    }}
-                    onKeyUp={handleKeyUp}
-                    // Broken
-                    onClick={() => {
-                        setZIndex(cardRef.current)
-                    }}>
+                    onInput={() => autoGrow(textAreaRef)}
+                    onFocus={() => setSelectedNote(note)}
+                    onKeyUp={handleKeyUp}>
                 </textarea>
             </div>
         </div>
