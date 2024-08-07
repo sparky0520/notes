@@ -79,13 +79,19 @@ const NoteCard = ({ note }) => {
         }
     }
     // drop card from mouse
-    const mouseUp = () => {
+    const mouseUp = async () => {
         document.removeEventListener('mousemove', mouseMove)
         document.removeEventListener('mouseup', mouseUp)
+        saveData("position",{
+            // save the position with current card coordinates - using cardRef
+            x: cardRef.current.offsetLeft,
+            y: cardRef.current.offsetTop
+        })
     }
 
     const saveData = async (key, value) => {
         const payload = { [key]: JSON.stringify(value) }
+        console.log("saveData called with payload: ",payload)
         try {
             await db.notes.update(note.$id, payload)
         } catch (error) {
