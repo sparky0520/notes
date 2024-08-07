@@ -15,3 +15,9 @@ Currently, two official plugins are available:
 
 - Appwrite is a open source backend as a service platform (like firebase). Using it to store the data for notes such as id, body, color, groups. It provides a convenient SDK for accessing the database.
 
+# Steps to run this project locally
+
+- Make sure to have the latest version of NodeJS installed on your computer. Visit `nodejs.org` to download it.
+
+- Clone this repository on your machine using
+git clone  
