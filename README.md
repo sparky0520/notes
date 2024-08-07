@@ -19,5 +19,9 @@ Currently, two official plugins are available:
 
 - Make sure to have the latest version of NodeJS installed on your computer. Visit `nodejs.org` to download it.
 
-- Clone this repository on your machine using
-git clone  
+- Clone this repository on your machine using `git clone https://github.com/sparky0520/notes.git`
+
+- Install all the dependencies using `npm install`
+
+- Run the development server using `npm run dev`.
+
