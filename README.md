@@ -1,4 +1,4 @@
-# Notes App
+# Notes app but featureful
 
 ## React + Appwrite 
 
